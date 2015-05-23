@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.coolweather.app.R;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -137,8 +138,8 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	 * 根据传入的地址和类型去向服务器查询天气代号或者天气信息。
 	 */
 	private void queryFromServer(final String address, final String type){
+		
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
-			
 			@Override
 			public void onFinish(final String response) {
 				if("countyCode".equals(type)){
@@ -187,6 +188,9 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		currentDateText.setText(prefs.getString("current_data", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		
+		Intent intent = new Intent(this, AutoUpdateService.class);
+		startService(intent);
 	}
 	
 }
